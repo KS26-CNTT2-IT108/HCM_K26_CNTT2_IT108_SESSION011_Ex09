@@ -1,0 +1,31 @@
+SESSION11
+Bài 9: Tự Động Tra Cứu Phòng Và Thù Lao Báo Cáo Viên Bằng VLOOKUP
+
+Tên lớp: HCM K26 CNTT2
+Môn học: Nhập môn công nghệ thông tin
+Họ và tên: LƯƠNG THANH THƯ
+
+
+Phần 1: Phân tích
+
+Thành phần			Giá trị
+lookup_value			TRIM(C2) (Mã tác giả, không có $)
+table_array			DanhMucTacGia!$A$2:$E$81 (cột đầu là Mã TG, khóa bằng $)
+col_index_num			D = 2 (Tên), E = 4 (Phòng), F = 5 (Thù lao)
+range_lookup			FALSE
+
+Xử lý 3 bẫy:
+
+Bẫy					Giải pháp
+Khoảng trắng thừa			TRIM() bọc lookup_value
+Tác giả mời ngoài			IFERROR() hiện “Chưa cập nhật”
+Quên khóa vùng				$(F4) ở table_array
+
+Các bước: chọn D2, nhập công thức, Enter, kéo xuống D81; lặp lại cho E2, F2 (chỉ đổi số cột).
+
+Phần 2: Công thức
+D2: =IFERROR(VLOOKUP(TRIM(C2),DanhMucTacGia!$A$2:$E$81,2,FALSE),"Chưa cập nhật")
+E2: =IFERROR(VLOOKUP(TRIM(C2),DanhMucTacGia!$A$2:$E$81,4,FALSE),"Chưa cập nhật")
+F2: =IFERROR(VLOOKUP(TRIM(C2),DanhMucTacGia!$A$2:$E$81,5,FALSE),"Chưa cập nhật")
+
+Vì sao chỉ cần đổi col_index_num: mã tra và vùng tra giống nhau ở cả 3 cột, chỉ khác cột cần lấy. Bỏ $ thì sao: kéo xuống D5, vùng tra trượt từ A2:E81 thành A5:E84, mất các dòng đầu (TG001, TG002, TG003) nên ra #N/A. IFERROR sẽ che lỗi này thành “Chưa cập nhật”, rất khó phát hiện.
